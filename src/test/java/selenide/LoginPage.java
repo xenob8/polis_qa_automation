@@ -1,10 +1,7 @@
 package selenide;
 
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.Selenide.*;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.selector.*;
-
 
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byXpath;
@@ -16,21 +13,16 @@ public class LoginPage {
     private final static SelenideElement passwordField = $(byId("field_password"));
     private final static SelenideElement loginButton = $(byXpath("//input[@data-l='t,sign_in']"));
 
-    public LoginPage open(){
+    public LoginPage open() {
         Selenide.open("/");
         return this;
     }
 
-    public LoginPage loginByPhone(String phone, String pwd){
+    public UserPage loginByPhone(String phone, String pwd) {
         emailField.val(phone);
         passwordField.val(pwd);
         loginButton.click();
-        return this;
-    }
-
-    public UserPage getUserPage(){
         return new UserPage();
     }
-
 
 }

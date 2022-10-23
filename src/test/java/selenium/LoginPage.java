@@ -2,29 +2,28 @@ package selenium;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class LoginPage {
 
-    private WebElement emailField;
-    private WebElement passwordField;
-    private WebElement loginButton;
+    private final By emailField = By.id("field_email");
+    private final By passwordField = By.id("field_password");
+    private final By loginButton = By.xpath("//input[@data-l='t,sign_in']");
+    private final WebDriver webDriver;
 
     public LoginPage(WebDriver webDriver) {
-        emailField = webDriver.findElement(By.id("field_email"));
-        passwordField = webDriver.findElement(By.id("field_password"));
-        loginButton = webDriver.findElement(By.xpath("//input[@data-l='t,sign_in']"));
+        this.webDriver = webDriver;
     }
 
-    public void loginByPhone(String phone, String pwd){
-        emailField.click();
-        emailField.clear();
-        emailField.sendKeys(phone);
+    public UserPage loginByPhone(String phone, String pwd) {
+        webDriver.findElement(emailField).click();
+        webDriver.findElement(emailField).clear();
+        webDriver.findElement(emailField).sendKeys(phone);
 
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys(pwd);
-        loginButton.click();
+        webDriver.findElement(passwordField).click();
+        webDriver.findElement(passwordField).clear();
+        webDriver.findElement(passwordField).sendKeys(pwd);
+        webDriver.findElement(loginButton).click();
+        return new UserPage(webDriver);
     }
 
 

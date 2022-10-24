@@ -8,17 +8,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 
+
 public class UserPage {
 
-    private final WebDriver webDriver;
-    private static final By userInfoPath = By.xpath("//a[@data-l='t,userPage']/div[@class='tico ellip']");
+    private final WebDriver driver;
+    private static final By userInfoLocator = By.xpath("//a[@data-l='t,userPage']/div[@class='tico ellip']");
 
     public UserPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
+        this.driver = webDriver;
+        if (!driver.getTitle().equals("Одноклассники")) {
+            throw new IllegalStateException("This is not Home Page of logged in user," +
+                    " current page is: " + driver.getCurrentUrl());
+        }
     }
 
     public String getVisibleUserName() {
-        return new WebDriverWait(webDriver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(userInfoPath)).getText();
+        return new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOfElementLocated(userInfoLocator)).getText();
     }
 }

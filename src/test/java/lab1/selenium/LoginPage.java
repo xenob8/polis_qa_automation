@@ -5,25 +5,39 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginPage {
 
-    private final By emailField = By.id("field_email");
-    private final By passwordField = By.id("field_password");
-    private final By loginButton = By.xpath("//input[@data-l='t,sign_in']");
-    private final WebDriver webDriver;
+    private final By emailLocator = By.id("field_email");
+    private final By passwordLocator = By.id("field_password");
+    private final By loginButtonLocator = By.xpath("//input[@data-l='t,sign_in']");
+    private final String TITLE_RU = "Социальная сеть Одноклассники. Общение с друзьями в ОК. Ваше место встречи с одноклассниками";
+    private final WebDriver driver;
 
     public LoginPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
+        this.driver = webDriver;
+        if (!TITLE_RU.equals(driver.getTitle())) {
+            throw new IllegalStateException("This is not the login page");
+        }
     }
 
-    public UserPage loginByPhone(String phone, String pwd) {
-        webDriver.findElement(emailField).click();
-        webDriver.findElement(emailField).clear();
-        webDriver.findElement(emailField).sendKeys(phone);
+    public LoginPage typeEmail(String phone) {
+        driver.findElement(emailLocator).click();
+        driver.findElement(emailLocator).clear();
+        driver.findElement(emailLocator).sendKeys(phone);
+        return this;
+    }
 
-        webDriver.findElement(passwordField).click();
-        webDriver.findElement(passwordField).clear();
-        webDriver.findElement(passwordField).sendKeys(pwd);
-        webDriver.findElement(loginButton).click();
-        return new UserPage(webDriver);
+    public LoginPage typePassword(String pwd) {
+        driver.findElement(passwordLocator).click();
+        driver.findElement(passwordLocator).clear();
+        driver.findElement(passwordLocator).sendKeys(pwd);
+        driver.findElement(loginButtonLocator).click();
+        return this;
+    }
+
+
+    public UserPage loginByPhone(String phone, String pwd) {
+        typeEmail(phone);
+        typePassword(pwd);
+        return new UserPage(driver);
     }
 
 
